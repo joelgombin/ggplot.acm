@@ -1,9 +1,10 @@
 Package: ggplot.acm
 Type: Package
-Title: What the package does (short line)
+Title: This package offers a function to display a graphical representation of a MCA object, with ggplot2.
 Version: 1.0
 Date: 2012-11-06
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Joël Gombin
+Maintainer: Joël Gombin <joel.gombin@gmail.com>
+Description: Takes an MCA object (produced by the FactoMineR package) and return a ggplot2 object, diplaying a factorial plan, with several options. 
+Depends: R, FactoMineR, directlabels, ellipse, rgrs, boot 
+License: GPL (>=2)
