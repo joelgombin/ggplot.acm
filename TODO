@@ -1,0 +1,18 @@
+A FAIRE
+
+- variables supplémetaires
+- individus supplémentaires
+- création de graphiques pour les sous-nuages
+- gestion des ACP (voir http://gastonsanchez.wordpress.com/2012/06/17/principal-components-analysis-in-r-part-1/)
+- courbes de densité ?
+
+
+
+FAIT
+
+- regarder la fonction aes_string (plutôt qu'appels à get et evaluate ?) -> ne marche pas quand il y a un espace dans le nom de la variable
+- utiliser la fonctionnalité "autoplot" de ggplot2 v0.9 - et aussi "fortify" en amont pour transformer les données
+- utiliser la contribution plutôt que le cos2
+- surface des points proportionnelle à leur poids (individus ET modalités) -> modalités seulement car pas possible d'utiliser deux fois la même aesthetics 
+- ACMspé (cf. Chiche et Leroux 2010) (à traiter en dehors - sera intégré dans FactoMineR - dispo sur http://nicolas.robette.free.fr/Docs/GDA_in_R.txt) 
+- permet de représenter plus de six variables 
