@@ -1,4 +1,4 @@
-#' Prepares the data for \code{ggplot.model}. 
+#' @title Prepares the data for \code{ggplot.model}. 
 #'
 #' @param model an model of class MCA
 #' @param data not used.

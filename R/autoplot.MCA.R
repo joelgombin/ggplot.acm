@@ -1,15 +1,26 @@
+#' @title \code{ggplot} output for MCA objects. 
+#' @details This method takes an object of class MCA, and produces a \code{ggplot2} graphical representation of a factorial plan, with several options. 
+#' @param object a MCA-class object.
+#' @param axes A 2-length vector. Selects which dimensions should be displayed. 
+#' @param mod whether the variables modalities should be represented.
+#' @param ind whether the individuals should be represented.
+#' @param filtre indicates the value of the contribution above which modalities should be represented. If it takes the value "moyenne", then the mean of the contributions is used.
+#' @param axis.plot whether the axes should be plotted.
+#' @param alpha the alpha parameter for the individual points.
+#' @param point.type controls the size of individual points. Can be "petit" (small) or "gros" (big).
+#' @param ellipses a variable name. Ellipses are drawn for each modality of this variable.
+#' @param coloriage a variable name. Individual points are colored acoordingly to the modalities of this variable. In that case, the variables' modalities are drawn in black.
+#' @param taille whether the individual (resp. modalities) points' size should be proportional to their weight (resp. contribution).   
+#' @return a \code{ggplot2} object, which is also printed. 
+#' @keywords MCA, ggplot2, graphics
+#' @seealso \code{\link{fortify.MCA}} 
+#' @export
+#' @examples
+#' library(FactoMineR)
+#' data(tea)
+#' tea.mca <- MCA(tea[,1:18], graph=FALSE)
+#' autoplot(tea.mca)
 autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE) {
-  ## object doit être un objet de classe MCA
-  ## axes permet de choisir les dimensions représentées
-  ## mod indique s'il faut représenter les modalités des variables
-  ## ind indique s'il faut représenter les individus (en transparence)
-  ## filtre indique la valeur de la contribution au dessus de laquelle les modalités doivent être représentées. S'il prend la valeur "moyenne", seules les contributions supérieures à la moyenne sont retenues
-  ## axis.plot indique s'il faut tracer les axes
-  ## alpha permet de contrôler l'intensité des points des individus (valeur nulle ou positive)
-  ## point.type contrôle la taille du point des individus. Peut prendre les valeurs "petit" ou "gros"
-  ## ellipses doit être un nom de variable à représenter sous forme d'ellipses
-  ## coloriage doit être un nom de variable, les points sont coloriés en fonction de ses modalités. Dans ce cas, les variables elles-mêmes sont représentées en noir.
-  ## taille doit être une valeur logique,  indiquant si les points doivent être proportionnels à leur poids (contribution pour les modalités) 
   
   .e <- environment()
   toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")

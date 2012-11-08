@@ -1,1 +1,7 @@
-exportPattern("^[[:alpha:]]+")
+export(autoplot.MCA)
+export(fortify.MCA)
+import(boot)
+import(directlabels)
+import(ellipse)
+import(ggplot2)
+import(rgrs)

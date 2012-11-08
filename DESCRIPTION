@@ -1,10 +1,21 @@
 Package: ggplot.acm
 Type: Package
-Title: This package offers a function to display a graphical representation of a MCA object, with ggplot2.
-Version: 1.0
+Title: ggplot2 plots made easy for Multiple correspondence analysis (MCA)
+Version: 0.1
 Date: 2012-11-06
-Author: Joël Gombin
-Maintainer: Joël Gombin <joel.gombin@gmail.com>
-Description: Takes an MCA object (produced by the FactoMineR package) and return a ggplot2 object, diplaying a factorial plan, with several options. 
-Depends: R, FactoMineR, directlabels, ellipse, rgrs, boot 
+Author: Joel Gombin
+Maintainer: Joel Gombin <joel.gombin@gmail.com>
+Description: Takes an MCA object (produced by the FactoMineR package) and
+    return a ggplot2 object, diplaying a factorial plan, with several options.
+Depends:
+    ggplot2 (>= 0.9.1),
+    FactoMineR,
+    directlabels,
+    ellipse,
+    rgrs,
+    boot
 License: GPL (>=2)
+Collate:
+    'autoplot.MCA.R'
+    'fortify.MCA.R'
+    'package.R'
