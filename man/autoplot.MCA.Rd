@@ -5,7 +5,7 @@
   autoplot.MCA(object, axes = c(1, 2), mod = TRUE,
     ind = FALSE, filtre = 0, axis.plot = TRUE, alpha = 1,
     point.type = "petit", ellipses = NA, coloriage = NA,
-    taille = FALSE)
+    taille = FALSE, dl.method = "smartgrid")
 }
 \arguments{
   \item{object}{a MCA-class object.}
@@ -43,6 +43,10 @@
   \item{taille}{whether the individual (resp. modalities)
   points' size should be proportional to their weight
   (resp. contribution).}
+
+  \item{dl.method}{the method to be used for direct
+  labeling. See
+  \url{http://directlabels.r-forge.r-project.org/docs/index.html}.}
 }
 \value{
   a \code{ggplot2} object, which is also printed.

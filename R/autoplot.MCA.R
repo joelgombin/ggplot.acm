@@ -11,6 +11,7 @@
 #' @param ellipses a variable name. Ellipses are drawn for each modality of this variable.
 #' @param coloriage a variable name. Individual points are colored acoordingly to the modalities of this variable. In that case, the variables' modalities are drawn in black.
 #' @param taille whether the individual (resp. modalities) points' size should be proportional to their weight (resp. contribution).   
+#' @param dl.method the method to be used for direct labeling. See \url{http://directlabels.r-forge.r-project.org/docs/index.html}.
 #' @return a \code{ggplot2} object, which is also printed. 
 #' @keywords MCA, ggplot2, graphics
 #' @seealso \code{\link{fortify.MCA}} 
@@ -20,7 +21,7 @@
 #' data(tea)
 #' tea.mca <- MCA(tea[,1:18], graph=FALSE)
 #' autoplot(tea.mca)
-autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE) {
+autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid") {
   
   .e <- environment()
   toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")
@@ -77,19 +78,19 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
   
   if (mod & is.na(coloriage)) {
     if (taille) {
-      p <- p + geom_point(aes(colour=var, shape=var, size=size)) + geom_dl(aes(label=label,colour=var, size=size), method="smart.grid", show_guide=FALSE) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable))) + scale_size_continuous(guide=FALSE)
+      p <- p + geom_point(aes(colour=var, shape=var, size=size)) + geom_dl(aes(label=label,colour=var, size=size), method=dl.method, show_guide=FALSE) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable))) + scale_size_continuous(guide=FALSE)
       }
     else {
-      p <- p + geom_point(aes(colour=var, shape=var), size=4) + geom_dl(aes(label=label,colour=var), method="smart.grid", show_guide=FALSE) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
+      p <- p + geom_point(aes(colour=var, shape=var), size=4) + geom_dl(aes(label=label,colour=var), method=dl.method, show_guide=FALSE) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
     }
   }
   
   if (mod & !(is.na(coloriage))) {
     if (taille) {
-      p <- p + geom_point(aes(shape=var,size=size)) + geom_dl(aes(label=label), method="smart.grid", show_guide=FALSE) + scale_shape_manual(name = "Variables",values=1:length(unique(var))) + scale_size_continuous(guide=FALSE)
+      p <- p + geom_point(aes(shape=var,size=size)) + geom_dl(aes(label=label), method=dl.method, show_guide=FALSE) + scale_shape_manual(name = "Variables",values=1:length(unique(var))) + scale_size_continuous(guide=FALSE)
     }
     else {
-      p <- p + geom_point(aes(shape=var), size=4) + geom_dl(aes(label=label), method="smart.grid", show_guide=FALSE) + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
+      p <- p + geom_point(aes(shape=var), size=4) + geom_dl(aes(label=label), method=dl.method, show_guide=FALSE) + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
     }
   }
   
