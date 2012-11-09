@@ -43,7 +43,7 @@ autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axi
   p <- ggplot(df[(df[df$type %in% "variable",paste("Dim ",axes[1],".contrib",sep="")] > filtre) | (df[df$type %in% "variable",paste("Dim ",axes[2],".contrib",sep="")] > filtre), ], aes(x=get(eval(names(df)[axes[1]])), y=get(eval(names(df)[axes[2]]))),environment=.e) # la base
   variable <- df[(df[df$type %in% "variable",paste("Dim ",axes[1],".contrib",sep="")] > filtre) | (df[df$type %in% "variable",paste("Dim ",axes[2],".contrib",sep="")] > filtre), "var"]
   p <- p + xlab(paste("Dimension ",axes[1]," - ",round(object$eig[axes[1],"percentage of variance"],2)," %",sep="")) # légende de l'axe des abcisses
-  p <- p + ylab(paste("Dimension", axes[2]," - ",round(object$eig[axes[2],"percentage of variance"],2)," %",sep="")) # légende de l'axe des ordonnées
+  p <- p + ylab(paste("Dimension ", axes[2]," - ",round(object$eig[axes[2],"percentage of variance"],2)," %",sep="")) # légende de l'axe des ordonnées
   
   if (axis.plot) {p <- p + geom_vline(xintercept=0, colour="dark gray") + geom_hline(yintercept=0, colour="dark gray")} # représenter les axes
   
