@@ -50,7 +50,8 @@
 
   \item{dl.method}{the method to be used for direct
   labeling. See
-  \url{http://directlabels.r-forge.r-project.org/docs/index.html}.}
+  \url{http://directlabels.r-forge.r-project.org/docs/index.html}.
+  If equals to FALSE, then normal text labeling.}
 
   \item{labels}{which points should be labelled? Can be
   'all', 'var', or 'sup'.}
