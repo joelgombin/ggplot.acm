@@ -2,7 +2,7 @@
 \alias{fortify.MCA}
 \title{Prepares the data for \code{ggplot.model}.}
 \usage{
-  fortify.MCA(model, data, ...)
+  fortify.MCA(model, data, quali.sup = TRUE, ...)
 }
 \arguments{
   \item{model}{an model of class MCA}

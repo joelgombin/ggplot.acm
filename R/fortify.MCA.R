@@ -20,11 +20,11 @@ fortify.MCA <- function(model, data, quali.sup=TRUE, ...) {
   .e <- environment()
     
   df <- as.data.frame(cbind(model$var$coord,model$var$contrib)) ## on récupère les coordonnées et les contributions des variables seulement
-  if (quali.sup & exists("model$quali.sup")) df <- rbind(df, as.data.frame(cbind(model$quali.sup$coord,as.data.frame(matrix(nrow=dim(model$quali.sup$coord)[1],ncol=dim(model$quali.sup$coord)[2],dimnames=list(c(),names(model$quali.sup$coord))))))) ## on récupère les coordonnées des variables supplémentaires si nécessaire. Pas de contributions donc on met des NA.
+  if (quali.sup & ("quali.sup" %in% names(model$call))) df <- rbind(df, as.data.frame(cbind(model$quali.sup$coord,as.data.frame(matrix(nrow=dim(model$quali.sup$coord)[1],ncol=dim(model$quali.sup$coord)[2],dimnames=list(c(),names(model$quali.sup$coord))))))) ## on récupère les coordonnées des variables supplémentaires si nécessaire. Pas de contributions donc on met des NA.
   
   names(df) <- c(paste(dimnames(model$var$coord)[[2]],".coord",sep=""),paste(dimnames(model$var$contrib)[[2]],".contrib",sep=""))
   modalites <- lapply(model$call$X[,model$call$quali],FUN=function(x) levels(as.factor(x)))
-  if (quali.sup & exists("model$quali.sup")) {
+  if (quali.sup & ("quali.sup" %in% names(model$call))) {
     modalites <- lapply(model$call$X[,c(model$call$quali,model$call$quali.sup)],FUN=function(x) levels(as.factor(x)))
   }
   k <- 0
@@ -42,7 +42,7 @@ fortify.MCA <- function(model, data, quali.sup=TRUE, ...) {
   df[,paste("size",1:model$call$ncp,sep="")] <- NA
   df[rownames(model$var$contrib),paste("size",1:model$call$ncp,sep="")] <- model$var$contrib
   df$type <- "variable"
-  if (exists("model$quali.sup") & quali.sup) df[df$var %in% names(model$call$X)[model$call$quali.sup],"type"] <- "quali.sup"
+  if (("quali.sup" %in% names(model$call)) & quali.sup) df[df$var %in% names(model$call$X)[model$call$quali.sup],"type"] <- "quali.sup"
   
   individus <- as.data.frame(cbind(model$ind$coord, model$ind$contrib))
   names(individus) <- c(paste(dimnames(model$var$coord)[[2]],".coord",sep=""),paste(dimnames(model$var$contrib)[[2]],".contrib",sep=""))
