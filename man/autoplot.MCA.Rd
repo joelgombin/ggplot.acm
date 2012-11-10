@@ -3,18 +3,22 @@
 \title{\code{ggplot} output for MCA objects.}
 \usage{
   autoplot.MCA(object, axes = c(1, 2), mod = TRUE,
-    ind = FALSE, filtre = 0, axis.plot = TRUE, alpha = 1,
-    point.type = "petit", ellipses = NA, coloriage = NA,
-    taille = FALSE, dl.method = "smartgrid")
+    quali.sup = TRUE, ind = FALSE, filtre = 0,
+    axis.plot = TRUE, alpha = 1, point.type = "petit",
+    ellipses = NA, coloriage = NA, taille = FALSE,
+    dl.method = "smart.grid", labels = "all")
 }
 \arguments{
   \item{object}{a MCA-class object.}
 
-  \item{axes}{A 2-length vector. Selects which dimensions
+  \item{axes}{a 2-length vector. Selects which dimensions
   should be displayed.}
 
   \item{mod}{whether the variables modalities should be
   represented.}
+
+  \item{quali.sup}{whether the supplementary (illustrative)
+  variables' modalities should be represented.}
 
   \item{ind}{whether the individuals should be
   represented.}
@@ -30,7 +34,7 @@
   points.}
 
   \item{point.type}{controls the size of individual points.
-  Can be "petit" (small) or "gros" (big).}
+  Can be 'petit' (small) or 'gros' (big).}
 
   \item{ellipses}{a variable name. Ellipses are drawn for
   each modality of this variable.}
@@ -47,6 +51,9 @@
   \item{dl.method}{the method to be used for direct
   labeling. See
   \url{http://directlabels.r-forge.r-project.org/docs/index.html}.}
+
+  \item{labels}{which points should be labelled? Can be
+  'all', 'var', or 'sup'.}
 }
 \value{
   a \code{ggplot2} object, which is also printed.
