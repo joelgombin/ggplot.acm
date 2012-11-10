@@ -1,8 +1,9 @@
 #' @title \code{ggplot} output for MCA objects. 
 #' @details This method takes an object of class MCA, and produces a \code{ggplot2} graphical representation of a factorial plan, with several options. 
 #' @param object a MCA-class object.
-#' @param axes A 2-length vector. Selects which dimensions should be displayed. 
+#' @param axes a 2-length vector. Selects which dimensions should be displayed. 
 #' @param mod whether the variables modalities should be represented.
+#' @param quali.sup whether the supplementary (illustrative) variables' modalities should be represented. 
 #' @param ind whether the individuals should be represented.
 #' @param filtre indicates the value of the contribution above which modalities should be represented. If it takes the value "moyenne", then the mean of the contributions is used.
 #' @param axis.plot whether the axes should be plotted.
@@ -21,7 +22,7 @@
 #' data(tea)
 #' tea.mca <- MCA(tea[,1:18], graph=FALSE)
 #' autoplot(tea.mca)
-autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid") {
+autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid") {
   
   .e <- environment()
   toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")
@@ -35,14 +36,42 @@ autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE, ind=FALSE, filtre=0, axi
   df <- fortify(object)
   df[df$type %in% "variable", "size"] <- df[df$type %in% "variable",sprintf("size%s", axes[1])] + df[df$type %in% "variable",sprintf("size%s", axes[2])]
   df[df$type %in% "individu", "size"] <- (df[df$type %in% "individu",sprintf("size%s", axes[1])] + df[df$type %in% "individu",sprintf("size%s", axes[2])]) / mean((df[df$type %in% "individu",sprintf("size%s", axes[1])] + df[df$type %in% "individu",sprintf("size%s", axes[2])])) * 4
+  df[df$type %in% "quali.sup", "size"] <- mean(df[df$type %in% "variable","size"]) # on donne une taille moyenne aux modalités des variables supplémentaires
   
   if (filtre %in% "moyenne") {filtre <- 100/dim(df[df$type %in% "variable",])[1]}
   
   pt <- "."
   if (point.type %in% "gros") pt <- 16
   
-  p <- ggplot(df[(df[df$type %in% "variable",paste("Dim ",axes[1],".contrib",sep="")] > filtre) | (df[df$type %in% "variable",paste("Dim ",axes[2],".contrib",sep="")] > filtre), ], aes(x=get(eval(names(df)[axes[1]])), y=get(eval(names(df)[axes[2]]))),environment=.e) # la base
-  variable <- df[(df[df$type %in% "variable",paste("Dim ",axes[1],".contrib",sep="")] > filtre) | (df[df$type %in% "variable",paste("Dim ",axes[2],".contrib",sep="")] > filtre), "var"]
+  ## sélection de la partie du df pertinente
+  
+  if (mod & quali.sup & ind) {
+    cond <- (df$type %in% "quali.sup") | (df$type %in% "individu") | ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+  }
+  if (mod & quali.sup & !ind) {
+    cond <- (df$type %in% "quali.sup") | ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+  }
+  if (mod & !quali.sup & !ind) {
+    cond <- ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+  }
+  if (mod & !quali.sup & ind) {
+    cond <- ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre) | (df$type %in% "individu")
+  }
+  if (!mod & quali.sup & ind) {
+    cond <- (df$type %in% "quali.sup") | (df$type %in% "individu")
+  }
+  if (!mod & quali.sup & !ind) {
+    cond <- (df$type %in% "quali.sup")
+  }
+  if (!mod & !quali.sup & ind) {
+    cond <- (df$type %in% "individu")
+  }
+  if (!mod & !quali.sup & !ind) {
+    stop('Nothing to plot!')
+  }
+  
+  p <- ggplot(df[cond,], aes(x=get(eval(names(df)[axes[1]])), y=get(eval(names(df)[axes[2]]))),environment=.e) # la base
+  variable <- df[cond, "var"]
   p <- p + xlab(paste("Dimension ",axes[1]," - ",round(object$eig[axes[1],"percentage of variance"],2)," %",sep="")) # légende de l'axe des abcisses
   p <- p + ylab(paste("Dimension ", axes[2]," - ",round(object$eig[axes[2],"percentage of variance"],2)," %",sep="")) # légende de l'axe des ordonnées
   
@@ -76,7 +105,7 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
     }
   }
   
-  if (mod & is.na(coloriage)) {
+  if ((mod | quali.sup) & is.na(coloriage)) {
     if (taille) {
       p <- p + geom_point(aes(colour=var, shape=var, size=size)) + geom_dl(aes(label=label,colour=var, size=size), method=dl.method, show_guide=FALSE) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable))) + scale_size_continuous(guide=FALSE)
       }
@@ -85,7 +114,7 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
     }
   }
   
-  if (mod & !(is.na(coloriage))) {
+  if ((mod |quali.sup) & !(is.na(coloriage))) {
     if (taille) {
       p <- p + geom_point(aes(shape=var,size=size)) + geom_dl(aes(label=label), method=dl.method, show_guide=FALSE) + scale_shape_manual(name = "Variables",values=1:length(unique(var))) + scale_size_continuous(guide=FALSE)
     }
