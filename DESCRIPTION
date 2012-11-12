@@ -19,3 +19,5 @@ Collate:
     'autoplot.MCA.R'
     'fortify.MCA.R'
     'package.R'
+    'spMCA.R'
+    'getindexcat.R'

@@ -1,0 +1,27 @@
+\name{spMCA}
+\alias{spMCA}
+\title{Specific MCA}
+\usage{
+  spMCA(data, excl = NULL, ncp = 5)
+}
+\arguments{
+  \item{data}{a data frame with n rows (individuals) and p
+  columns (categorical variables)}
+
+  \item{excl}{a vector indicating the indexes of the "junk"
+  categories (see the function \code{\link{getindexcat}})}
+
+  \item{ncp}{number of dimensions kept in the results (by
+  default 5)}
+}
+\value{
+  an object of class 'spMCA', in a similar way as
+  FactoMineR MCA function
+}
+\description{
+  Specific MCA
+}
+\author{
+  Nicolas Robette
+}
+

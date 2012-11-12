@@ -1,5 +1,7 @@
 export(autoplot.MCA)
 export(fortify.MCA)
+export(getindexcat)
+export(spMCA)
 import(boot)
 import(directlabels)
 import(ellipse)

@@ -1,0 +1,14 @@
+\name{getindexcat}
+\alias{getindexcat}
+\title{Lists the categories of a forthcoming MCA}
+\usage{
+  getindexcat(data)
+}
+\description{
+  Lists the categories of a forthcoming MCA
+}
+\details{
+  may be useful before a specific MCA to identify the
+  indexes of the "junk" categories
+}
+
