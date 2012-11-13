@@ -1,6 +1,7 @@
 export(autoplot.MCA)
 export(fortify.MCA)
 export(getindexcat)
+export(spe.MCA)
 export(spMCA)
 import(boot)
 import(directlabels)

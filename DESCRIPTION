@@ -21,3 +21,4 @@ Collate:
     'package.R'
     'spMCA.R'
     'getindexcat.R'
+    'spe.MCA.R'
