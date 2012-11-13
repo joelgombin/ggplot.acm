@@ -24,7 +24,12 @@ spe.MCA <- function(data,excl=NULL,ncp=5, quali.sup=0,excl.sup=list(0)) {
     }
     extract <- function(i) lapply(sup, function (y) y[[i]])
     acm$quali.sup <- sapply(c("coord","cos2","var","v.test"), function(i) do.call(rbind, extract(i)),simplify=FALSE)
+    acm$call$quali <- (1:dim(data)[2])[-quali.sup]
     acm$call$quali.sup <- quali.sup
+    if (!identical(excl.sup,list(0))) {
+      acm$call$excl.sup <- excl.sup
+      class(acm) <- c("es.MCA",class(acm))
+    }
     acm$call$X <- data
   }
   return(acm)
