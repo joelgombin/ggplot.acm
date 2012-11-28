@@ -50,6 +50,7 @@ fortify.MCA <- function(model, data, quali.sup=TRUE, ...) {
   individus[,paste("size",1:model$call$ncp,sep="")] <- model$call$row.w
   individus$type <- "individu"
   df <- rbind(df, individus)
+  df$var <- factor(df$var,levels=unique(df$var)[!is.na(unique(df$var))])
   return(df)
 }
 
@@ -92,6 +93,7 @@ fortify.es.MCA <- function(model, data, quali.sup=TRUE, ...) {
   individus[,paste("size",1:model$call$ncp,sep="")] <- model$call$row.w
   individus$type <- "individu"
   df <- rbind(df, individus)
+  df$var <- factor(df$var,levels=unique(df$var)[!is.na(unique(df$var))])
   return(df)
 }
 
