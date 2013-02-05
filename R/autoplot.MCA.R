@@ -23,6 +23,8 @@
 #' data(tea)
 #' tea.mca <- MCA(tea[,1:18], graph=FALSE)
 #' autoplot(tea.mca)
+### regarder si la fonction maptools::spplot avec la methode sp.pointLabel serait plus efficace : http://procomun.wordpress.com/2012/12/29/label-placement-lattice/
+
 autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid",labels="all") {
   
   .e <- environment()
@@ -45,18 +47,18 @@ autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE
   if (point.type %in% "gros") pt <- 16
   
   ## sélection de la partie du df pertinente
-  
+  sdim <- substr(names(df)[1],1,4)
   if (mod & quali.sup & ind) {
-    cond <- (df$type %in% "quali.sup") | (df$type %in% "individu") | ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+    cond <- (df$type %in% "quali.sup") | (df$type %in% "individu") | ((df$type %in% "variable") & (df[,paste(sdim,axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste(sdim,axes[2],".contrib",sep="")] > filtre)
   }
   if (mod & quali.sup & !ind) {
-    cond <- (df$type %in% "quali.sup") | ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+    cond <- (df$type %in% "quali.sup") | ((df$type %in% "variable") & (df[,paste(sdim,axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste(sdim,axes[2],".contrib",sep="")] > filtre)
   }
   if (mod & !quali.sup & !ind) {
-    cond <- ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre)
+    cond <- ((df$type %in% "variable") & (df[,paste(sdim,axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste(sdim,axes[2],".contrib",sep="")] > filtre)
   }
   if (mod & !quali.sup & ind) {
-    cond <- ((df$type %in% "variable") & (df[,paste("Dim ",axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste("Dim ",axes[2],".contrib",sep="")] > filtre) | (df$type %in% "individu")
+    cond <- ((df$type %in% "variable") & (df[,paste(sdim,axes[1],".contrib",sep="")] > filtre)) | (df$type %in% "variable" & df[,paste(sdim,axes[2],".contrib",sep="")] > filtre) | (df$type %in% "individu")
   }
   if (!mod & quali.sup & ind) {
     cond <- (df$type %in% "quali.sup") | (df$type %in% "individu")
@@ -85,8 +87,8 @@ autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE
   
   p <- ggplot(df[cond,], aes(x=get(eval(names(df)[axes[1]])), y=get(eval(names(df)[axes[2]]))),environment=.e) # la base
   variable <- df[cond, "var"]
-  p <- p + xlab(paste("Dimension ",axes[1]," - ",round(object$eig[axes[1],"percentage of variance"],2)," %",sep="")) # légende de l'axe des abcisses
-  p <- p + ylab(paste("Dimension ", axes[2]," - ",round(object$eig[axes[2],"percentage of variance"],2)," %",sep="")) # légende de l'axe des ordonnées
+  p <- p + xlab(paste("Dimension ",axes[1]," - ",round(as.data.frame(object$eig)[axes[1],2],2)," %",sep="")) # légende de l'axe des abcisses
+  p <- p + ylab(paste("Dimension ", axes[2]," - ",round(as.data.frame(object$eig)[axes[2],2],2)," %",sep="")) # légende de l'axe des ordonnées
   
   if (axis.plot) {p <- p + geom_vline(xintercept=0, colour="dark gray") + geom_hline(yintercept=0, colour="dark gray")} # représenter les axes
   
