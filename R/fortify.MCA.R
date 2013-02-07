@@ -47,7 +47,11 @@ fortify.MCA <- function(model, data, quali.sup=TRUE, ...) {
   individus <- as.data.frame(cbind(model$ind$coord, model$ind$contrib))
   names(individus) <- c(paste(dimnames(model$var$coord)[[2]],".coord",sep=""),paste(dimnames(model$var$contrib)[[2]],".contrib",sep=""))
   individus[,c("var", "label")] <- NA
-  individus[,paste("size",1:model$call$ncp,sep="")] <- model$call$row.w
+  if ("row.w" %in% names(model$call)) {
+    individus[,paste("size",1:model$call$ncp,sep="")] <- model$call$row.w
+  } else {
+    individus[,paste("size",1:model$call$ncp,sep="")] <- 1
+  }
   individus$type <- "individu"
   df <- rbind(df, individus)
   df$var <- factor(df$var,levels=unique(df$var)[!is.na(unique(df$var))])
