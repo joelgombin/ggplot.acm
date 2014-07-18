@@ -14,6 +14,7 @@
 #' @param taille whether the individual (resp. modalities) points' size should be proportional to their weight (resp. contribution).   
 #' @param dl.method the method to be used for direct labeling. See \url{http://directlabels.r-forge.r-project.org/docs/index.html}. If equals to FALSE, then normal text labeling. 
 #' @param labels which points should be labelled? Can be 'all', 'var', or 'sup'.
+#' @param label.size size of the labels. Defaults to 5.
 #' @return a \code{ggplot2} object, which is also printed. 
 #' @keywords MCA, ggplot2, graphics
 #' @seealso \code{\link{fortify.MCA}} 
@@ -27,14 +28,14 @@
 
 autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid",labels="all", label.size=5) {
   
-  .e <- environment()
-  toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")
-  erreur <- unlist(lapply(toLoad, require, character.only = TRUE))
-  toInstall <- toLoad[which(erreur %in% FALSE)]
-  if (length(toInstall) > 0) {
-    install.packages(toInstall, repos = "http://cran.r-project.org")
-    lapply(toInstall, require, character.only = TRUE)
-  }
+   .e <- environment()
+#   toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")
+#   erreur <- unlist(lapply(toLoad, require, character.only = TRUE))
+#   toInstall <- toLoad[which(erreur %in% FALSE)]
+#   if (length(toInstall) > 0) {
+#     install.packages(toInstall, repos = "http://cran.r-project.org")
+#     lapply(toInstall, require, character.only = TRUE)
+#   }
   
   df <- fortify(object)
   df[df$type %in% "variable", "size"] <- df[df$type %in% "variable",sprintf("size%s", axes[1])] + df[df$type %in% "variable",sprintf("size%s", axes[2])]
