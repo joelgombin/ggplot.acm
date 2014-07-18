@@ -25,7 +25,7 @@
 #' autoplot(tea.mca)
 ### regarder si la fonction maptools::spplot avec la methode sp.pointLabel serait plus efficace : http://procomun.wordpress.com/2012/12/29/label-placement-lattice/
 
-autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid",labels="all") {
+autoplot.MCA <- function(object, axes=c(1,2), mod=TRUE,quali.sup=TRUE, ind=FALSE, filtre=0, axis.plot=TRUE, alpha=1, point.type="petit", ellipses=NA, coloriage=NA, taille=FALSE,dl.method="smart.grid",labels="all", label.size=5) {
   
   .e <- environment()
   toLoad <- c("ggplot2", "directlabels", "rgrs", "boot", "ellipse")
@@ -128,9 +128,9 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
       p <- p + geom_point(aes(colour=var, shape=var), size=4) + scale_colour_discrete(name = "Variables") + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
     }
     if (dl.method %in% FALSE) {
-      p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label,colour=var),environment=.e,hjust=0,vjust=0,show_guide=FALSE)
+      p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label,colour=var),environment=.e,hjust=0,vjust=0,show_guide=FALSE, size = label.size)
     } else {
-      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label,colour=var), method=dl.method, show_guide=FALSE)
+      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label,colour=var), list(method=dl.method, cex = label.size / 6, show_guide=FALSE))
     }
   }
   
@@ -142,9 +142,9 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
       p <- p + geom_point(aes(shape=var), size=4) + scale_shape_manual(name = "Variables",values=1:length(unique(variable)))
     }
     if (dl.method %in% FALSE) {
-      p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label),environment=.e,hjust=0,vjust=0,show_guide=FALSE)
+      p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label),environment=.e,hjust=0,vjust=0,show_guide=FALSE, size = label.size)
     } else {
-      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label), method=dl.method, show_guide=FALSE)
+      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label), list(method=dl.method, cex = label.size / 5, show_guide=FALSE))
     }
   }
   
