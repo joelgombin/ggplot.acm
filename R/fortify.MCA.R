@@ -20,7 +20,7 @@ fortify.MCA <- function(model, data, quali.sup=TRUE, ...) {
   .e <- environment()
     
   df <- as.data.frame(cbind(model$var$coord,model$var$contrib)) ## on récupère les coordonnées et les contributions des variables seulement
-  if (quali.sup & ("quali.sup" %in% names(model$call))) df <- rbind(df, as.data.frame(cbind(model$quali.sup$coord,as.data.frame(matrix(nrow=dim(model$quali.sup$coord)[1],ncol=dim(model$quali.sup$coord)[2],dimnames=list(c(),names(model$quali.sup$coord))))))) ## on récupère les coordonnées des variables supplémentaires si nécessaire. Pas de contributions donc on met des NA.
+  if (quali.sup & ("quali.sup" %in% names(model$call))) df <- rbind(df, as.data.frame(cbind(model$quali.sup$coord,as.data.frame(matrix(nrow=dim(model$quali.sup$coord)[1],ncol=dim(model$quali.sup$coord)[2],dimnames=list(c(),dimnames(model$quali.sup$coord)[[2]])))))) ## on récupère les coordonnées des variables supplémentaires si nécessaire. Pas de contributions donc on met des NA.
   
   names(df) <- c(paste(dimnames(model$var$coord)[[2]],".coord",sep=""),paste(dimnames(model$var$contrib)[[2]],".contrib",sep=""))
   modalites <- lapply(model$call$X[,model$call$quali],FUN=function(x) levels(as.factor(x)))
