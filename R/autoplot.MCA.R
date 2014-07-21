@@ -131,7 +131,7 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
     if (dl.method %in% FALSE) {
       p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label,colour=var),environment=.e,hjust=0,vjust=0,show_guide=FALSE, size = label.size)
     } else {
-      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label,colour=var), list(method=dl.method, cex = label.size / 6, show_guide=FALSE))
+      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label,colour=var), list(dl.method, cex = label.size / 6, show_guide=FALSE))
     }
   }
   
@@ -145,7 +145,7 @@ p <- p + geom_point(data=data2,aes(x=get(eval(names(data2)[axes[1]])), y=get(eva
     if (dl.method %in% FALSE) {
       p <- p + geom_text(data=df[cond,][cond.label,], aes(x=get(eval(names(df)[axes[1]]))+(max(df[cond,names(df)[axes[1]]]) - min(df[cond,names(df)[axes[1]]]))/60, y=get(eval(names(df)[axes[2]])),label=label),environment=.e,hjust=0,vjust=0,show_guide=FALSE, size = label.size)
     } else {
-      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label), list(method=dl.method, cex = label.size / 5, show_guide=FALSE))
+      p <- p + geom_dl(data=df[cond,][cond.label,],aes(label=label), list(dl.method, cex = label.size / 6, show_guide=FALSE))
     }
   }
   
