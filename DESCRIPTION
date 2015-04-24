@@ -12,7 +12,6 @@ Depends:
     FactoMineR,
     directlabels,
     ellipse,
-    rgrs,
     boot
 License: GPL (>=2)
 Collate:
